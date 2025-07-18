@@ -1,11 +1,10 @@
 import jwt from "jsonwebtoken";
-
 export function generateAccessToken(payload: Record<string, unknown>) {
   const secret = process.env.JWT_SECRET;
 
   const expiry = process.env.ACCESS_TOKEN_EXPIRY;
-
   if (!secret || !expiry) {
+
     throw new Error("JWT_SECRET or ACCESS_TOKEN_EXPIRY is not defined");
   }
   const expiresIn = parseInt(expiry, 10) || "1h";

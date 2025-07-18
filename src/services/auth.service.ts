@@ -13,7 +13,7 @@ import { generateNumericPassword } from "../utils/helpers";
 
 export const AuthService = {
   login: async (input: LoginInput) => {
-    const user = await prismaClient.user.findUnique({
+    const user = await prismaClient.users.findUnique({
       where: { email: input.email },
     });
     if (!user || !compareSync(input.password, user.password)) {
@@ -34,7 +34,7 @@ export const AuthService = {
   },
 
   signUp: async (input: SignUpInput) => {
-    const existingUser = await prismaClient.user.findUnique({
+    const existingUser = await prismaClient.users.findUnique({
       where: { email: input.email },
     });
 
@@ -43,7 +43,7 @@ export const AuthService = {
     }
 
     const hashedPassword = await hashSync(input.password, 10);
-    const newUser = await prismaClient.user.create({
+    const newUser = await prismaClient.users.create({
       data: {
         ...input,
         password: hashedPassword,
@@ -69,10 +69,10 @@ export const AuthService = {
   sendOtp: async (input: SendOtpInput) => {
     const { email } = input;
 
-    const user = await prismaClient.user.findUnique({ where: { email } });
+    const user = await prismaClient.users.findUnique({ where: { email } });
     if (!user) throw new Error("User not found");
 
-    const existingOtp = await prismaClient.oTP.findFirst({
+    const existingOtp = await prismaClient.otps.findFirst({
       where: {
         email,
         expiresAt: { gt: new Date() },
@@ -89,7 +89,7 @@ export const AuthService = {
       otpCode = generateNumericPassword();
       const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 mins expiry
 
-      await prismaClient.oTP.create({
+      await prismaClient.otps.create({
         data: {
           email,
           code: otpCode,
@@ -116,7 +116,7 @@ export const AuthService = {
   verifyOtp: async (input: VerifyOtpInput) => {
     const { email, code } = input;
 
-    const otp = await prismaClient.oTP.findFirst({
+    const otp = await prismaClient.otps.findFirst({
       where: {
         email,
         code,
@@ -132,11 +132,11 @@ export const AuthService = {
   },
   resetPassword: async (input: ResetPasswordInput) => {
     const { email, newPassword } = input;
-    const user = await prismaClient.user.findUnique({ where: { email } });
+    const user = await prismaClient.users.findUnique({ where: { email } });
     if (!user) throw new Error("User not found");
 
     const hashedPassword = hashSync(newPassword, 10);
-    await prismaClient.user.update({
+    await prismaClient.users.update({
       where: { email },
       data: { password: hashedPassword, isFirstLogin: false },
     });
