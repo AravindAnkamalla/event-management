@@ -5,8 +5,9 @@ import {
   sendOtpSchema,
   signUpSchema,
   verifyOtpSchema,
-} from "../validations/auth.validations";
-import { AuthService } from "../services/auth.service";
+} from "../../validations/auth.validations";
+import { AuthService } from "../../services/auth/auth.service";
+
 
 export const login = async (
   req: Request,
