@@ -16,7 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/auth',authRoutes);
 app.use('/admin',adminRoutes)
-app.use('events',eventRoutes)
+app.use('/event',eventRoutes)
 app.use('/registrations', registrationsRoutes);
 app.use('/profiles', profilesRoutes);
 

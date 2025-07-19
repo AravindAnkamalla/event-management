@@ -61,7 +61,7 @@ export const verifyOtp = async (
     const result = await AuthService.verifyOtp(validatedInput);
     res
       .status(200)
-      .json({ message: "OTP verified successfully", data: result });
+      .json(result);
   } catch (error) {
     next(error);
   }

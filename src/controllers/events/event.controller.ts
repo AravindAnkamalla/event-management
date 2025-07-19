@@ -11,7 +11,7 @@ export const getEvents = async (
     const events = EventService.getEvents();
     res
       .status(200)
-      .json({ data: events, message: "Events fetched Successfully" });
+      .json({ events, message: "Events fetched Successfully" });
   } catch (error) {
     next(error);
   }
@@ -28,7 +28,7 @@ export const getPaginatedEvents = async (
       Number(limit)
     );
     res.status(200).json({
-      data: events,
+       ...events,
       message: "Paginated events fetched successfully",
     });
   } catch (error) {
@@ -45,7 +45,7 @@ export const upsertEvent = async (
     const events = EventService.upsertEvent(validatedInput);
     res
       .status(200)
-      .json({ data: events, message: "Events fetched Successfully" });
+      .json({ events, message: "Events fetched Successfully" });
   } catch (error) {
     next(error);
   }
@@ -57,14 +57,14 @@ export const userRegisteredEvents = async (
   next: NextFunction
 ) => {
   try {
-    const userId = req.user?.id;
+    const {userId} = req.params;
     if (!userId) {
       throw new Error("User ID is required");
     }
 
-    const events = await EventService.userRegisteredEvents(userId);
+    const events = await EventService.userRegisteredEvents(Number(userId));
     res.status(200).json({
-      data: events,
+      events,
       message: "Registered events fetched successfully",
     });
   } catch (error) {
@@ -84,10 +84,7 @@ export const getEventsDetailsWithRegisteredUsers = async (
     const events = await EventService.getEventsDetailsWithRegisteredUsers(
       Number(eventId)
     );
-    res.status(200).json({
-      data: events,
-      message: "Events with details and registered users fetched successfully",
-    });
+    res.status(200).json(events);
   } catch (error) {
     next(error);
   }
@@ -100,10 +97,7 @@ export const getEventDetails = async (
   try {
     const { eventId } = req.params;
     const eventDetails = await EventService.getEventDetails(Number(eventId));
-    res.status(200).json({
-      data: eventDetails,
-      message: "event details fetched successfully",
-    });
+    res.status(200).json(eventDetails);
   } catch (error) {
     next(error);
   }

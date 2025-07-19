@@ -128,11 +128,11 @@ export const EventService = {
     if (!event) {
       throw new Error("Event does not exist");
     }
-    return { message: "event deleted successfully" };
+    return {id: event.id, message: "event deleted successfully" };
   },
   getPaginatedEvents: async (page: number, limit: number) => {
     const skip = (page - 1) * limit;
-    const [events, totalCount] = await Promise.all([
+    const [events, total] = await Promise.all([
       prismaClient.events.findMany({
         skip,
         take: limit,
@@ -141,9 +141,11 @@ export const EventService = {
     ]);
 
     return {
+      page,
+      limit,
       events,
-      totalCount,
-      totalPages: Math.ceil(totalCount / limit),
+      total,
+      totalPages: Math.ceil(total / limit),
       currentPage: page,
     };
   },

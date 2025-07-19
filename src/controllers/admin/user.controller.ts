@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, response, Response } from "express";
 import { AdminService } from "../../services/admin/user.service";
 import {
   createUserSchema,
@@ -30,7 +30,7 @@ export const getUsers = async (
     const users = await AdminService.getUsers();
     res
       .status(200)
-      .json({ data: users, message: "Users fetched successfully" });
+      .json(users);
   } catch (error) {
     next(error);
   }
@@ -42,8 +42,8 @@ export const deleteUser = async (
   next: NextFunction
 ) => {
   try {
-    const { id } = req.params;
-    await AdminService.deleteUser(Number(id));
+    const { userId } = req.params;
+    await AdminService.deleteUser(Number(userId));
     res.status(204).send();
   } catch (error) {
     next(error);
@@ -55,9 +55,9 @@ export const getUserById = async (
   next: NextFunction
 ) => {
   try {
-    const { id } = req.params;
-    const user = await AdminService.getUserById(Number(id));
-    res.status(200).json({ data: user, message: "User fetched successfully" });
+    const { userId } = req.params;
+    const user = await AdminService.getUserById(Number(userId));
+    res.status(200).json(user);
   } catch (error) {
     next(error);
   }
@@ -68,8 +68,8 @@ export const inviteUser = async (
   next: NextFunction
 ) => {
   try {
-    const { id } = req.params;
-    const result = await AdminService.inviteUser({ id: Number(id) });
+    const { userId } = req.params;
+    const result = await AdminService.inviteUser({ id: Number(userId) });
     res
       .status(200)
       .json({ message: "User invited successfully", data: result });
@@ -84,10 +84,10 @@ export const upsertUser = async (
 ) => {
   try {
     const validatedInput = UpsertUserSchema.parse(req.body);
-    const result = await AdminService.upsertUser(validatedInput);
+    const response = await AdminService.upsertUser(validatedInput);
     res
       .status(200)
-      .json({ message: "User upserted successfully", data: result });
+      .json(response);
   } catch (error) {
     next(error);
   }
