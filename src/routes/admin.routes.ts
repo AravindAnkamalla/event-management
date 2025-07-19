@@ -1,0 +1,21 @@
+import { Router } from "express";
+import { authenticate, authorize } from "../middleware/auth.middleware";
+import {
+  createUser,
+  deleteUser,
+  getUserById,
+  getUsers,
+  upsertUser,
+} from "../controllers/admin/user.controller";
+const adminRoutes: Router = Router();
+
+adminRoutes.post("/create-user", authenticate, authorize, createUser);
+adminRoutes.get("/users", authenticate, authorize, getUsers);
+adminRoutes.get("/users/:userId/details", authenticate, authorize, getUserById);
+adminRoutes.post("/users/upsert", authenticate, authorize, upsertUser);
+adminRoutes.delete(
+  "/users/:userId/delete",
+  authenticate,
+  authorize,
+  deleteUser
+);
