@@ -5,6 +5,7 @@ export interface SendAccountCreatedEmailInput {
 }
 export interface SendAccountCreatedEmailResponse {
   msg: string;
+  status: "success" | "error";
 }
 export interface SendOtpEmailInput {
   to: string;

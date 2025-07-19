@@ -37,7 +37,7 @@ export const sendAccountCreatedEmail = async (
     throw new Error("Account creation email failed");
   }
 
-  return { msg: "Email sent successfully" };
+  return { msg: "Email sent successfully", status: "success" };
 };
 
 export const sendOtpEmail = async (
