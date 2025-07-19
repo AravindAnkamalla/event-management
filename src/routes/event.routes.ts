@@ -1,0 +1,11 @@
+import { Router } from "express";
+import { authenticate, authorize } from "../middleware/auth.middleware";
+import { deleteEvent, getEvents, getEventsDetailsWithRegisteredUsers, getPaginatedEvents, upsertEvent, userRegisteredEvents } from "../controllers/events/event.controller";
+const eventRoutes: Router = Router();
+eventRoutes.get('/',authenticate,authorize('ADMIN'),getPaginatedEvents);
+eventRoutes.get('/', authenticate, authorize('USER'), getEvents);
+eventRoutes.post('/upsertEvent', authenticate, authorize('ADMIN'), upsertEvent);
+eventRoutes.get('/:eventId/details', authenticate, authorize('ADMIN'), getEventsDetailsWithRegisteredUsers);
+eventRoutes.get('/:userId/registered', authenticate, authorize('USER'), userRegisteredEvents);
+eventRoutes.delete('/:eventId/delete', authenticate, authorize('ADMIN'), deleteEvent);
+export default eventRoutes;

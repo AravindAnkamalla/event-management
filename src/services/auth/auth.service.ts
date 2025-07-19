@@ -1,15 +1,15 @@
 import { compareSync, hashSync } from "bcrypt";
-import { prismaClient } from "../config/db";
+import { prismaClient } from "../../config/db";
+import { generateNumericPassword } from "../../utils/helpers";
+import { generateAccessToken } from "../../utils/jwt";
+import { sendOtpEmail } from "../../utils/mailer";
 import {
   LoginInput,
-  ResetPasswordInput,
-  SendOtpInput,
   SignUpInput,
+  SendOtpInput,
   VerifyOtpInput,
-} from "../validations/auth.validations";
-import { generateAccessToken } from "../utils/jwt";
-import { sendOtpEmail } from "../utils/mailer";
-import { generateNumericPassword } from "../utils/helpers";
+  ResetPasswordInput,
+} from "../../validations/auth.validations";
 
 export const AuthService = {
   login: async (input: LoginInput) => {
