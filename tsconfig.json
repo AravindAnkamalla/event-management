@@ -4,6 +4,8 @@
     "strict": true,
     "module": "commonjs",
     "target": "es2016",
+     "outDir": "dist",
+    "rootDir": "src",
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   },
