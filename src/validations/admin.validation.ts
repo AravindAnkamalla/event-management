@@ -51,7 +51,7 @@ export const InviteUserSchema = z.object({
 })
 export type InviteUserInput = z.infer<typeof InviteUserSchema>;
 export const UpsertUserSchema = createUserSchema.extend({
-  id: z.number().int().positive("Invalid user ID"),
+  id: z.number().int().positive("Invalid user ID").optional(),
   password: z.string().min(6, "Password must be at least 6 characters long").optional(),
 });
 export type UpsertUserInput = z.infer<typeof UpsertUserSchema>;
